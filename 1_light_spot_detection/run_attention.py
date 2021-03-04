@@ -1,19 +1,11 @@
-from get_light_attention import find_tfl_lights
+from find_tfl_lights.py import find_tfl_lights
 import os
 import json
 import glob
 import argparse
-
 import numpy as np
-from scipy import signal as sg
-import scipy.ndimage as ndimage
-from scipy.ndimage.filters import maximum_filter
-
 from PIL import Image
-
 import matplotlib.pyplot as plt
-
-
 
 
 def show_image_and_gt(image, objs, fig_num=None):
@@ -42,7 +34,6 @@ def test_find_tfl_lights(image_path, json_path=None, fig_num=None):
         objects = [o for o in gt_data['objects'] if o['label'] in what]
 
     show_image_and_gt(image, objects, fig_num)
-
     red_x, red_y, green_x, green_y = find_tfl_lights(image)
     plt.plot(red_x, red_y, 'ro', color='r', markersize=4)
     plt.plot(green_x, green_y, 'ro', color='g', markersize=4)
@@ -57,7 +48,7 @@ def main(argv=None):
 
     parser.add_argument('-d', '--dir', type=str, help='Directory to scan images in')
     args = parser.parse_args(argv)
-    default_base = '../../data'
+    default_base = '../data'
     if args.dir is None:
         args.dir = default_base
     flist = glob.glob(os.path.join(args.dir, '*_leftImg8bit.png'))
