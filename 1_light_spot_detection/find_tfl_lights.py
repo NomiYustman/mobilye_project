@@ -24,15 +24,20 @@ def find_tfl_lights(c_image: np.ndarray):
     green_grad = convolve2d(black_white_image.T, kernel, boundary='symm', mode='same')
 
     ######## maximum filter
-    g = maximum_filter(np.real(green_grad), size=20)
+    max_filter_red = maximum_filter(np.real(red_grad), size=10)
+    max_filter_red = np.argwhere(max_filter_red == red_grad)
+    max_filter_green = maximum_filter(np.real(green_grad), size=10)
+    max_filter_green = np.argwhere(max_filter_green == red_grad)
 
     ######## filter
     # red
     red = np.argwhere(red_grad > 1650)
+    red = np.array([i for i in red if i in max_filter_red])
     red_x, red_y = np.array(red[:, :1]).ravel(), np.array(red[:, 1:]).ravel()
 
     # green
     green = np.argwhere(green_grad > 1650)
+    green = np.array([i for i in green if i in max_filter_green])
     green_x, green_y = np.array(green[:, :1]).ravel(), np.array(green[:, 1:]).ravel()
 
     return red_x, red_y, green_x, green_y

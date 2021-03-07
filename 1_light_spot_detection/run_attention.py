@@ -1,4 +1,4 @@
-from find_tfl_lights.py import find_tfl_lights
+from find_tfl_lights import find_tfl_lights
 import os
 import json
 import glob
